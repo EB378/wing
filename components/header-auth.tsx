@@ -5,8 +5,8 @@ import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { createClient } from "@/utils/supabase/server";
 
-export default async function AuthButton({ params }: { params: { locale: string } }) {
-  const { locale } = params; // Extract locale dynamically
+export default async function AuthButton({ params }: { params: { locale?: string } }) {
+  const locale = params?.locale || "en"; // Fallback to 'en' if locale is undefined
   const supabase = await createClient();
 
   const {
@@ -16,11 +16,8 @@ export default async function AuthButton({ params }: { params: { locale: string 
   if (!hasEnvVars) {
     return (
       <div className="flex gap-4 items-center">
-        <Badge
-          variant={"default"}
-          className="font-normal pointer-events-none"
-        >
-          Please update .env.local file with anon key and url
+        <Badge variant={"default"} className="font-normal pointer-events-none">
+          Please update .env.local file with anon key and URL
         </Badge>
         <div className="flex gap-2">
           <Button
